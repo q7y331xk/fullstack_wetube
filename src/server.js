@@ -1,7 +1,7 @@
 
 import express from "express";
 import morgan from "morgan";
-import globalRouter from "./routers/globalRouter";
+import rootRouter from "./routers/rootRouter";
 import usersRouter from "./routers/usersRouter";
 import videoRouter from "./routers/videoRouter";
 
@@ -13,7 +13,7 @@ app.set("view engine","pug");
 app.set("views",process.cwd() + "/src/views");
 app.use(logger);    // 얘가  요청 정보를 콘솔에 기록하는얘
 app.use(express.urlencoded({extended: true}));
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users",usersRouter);
 

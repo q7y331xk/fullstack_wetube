@@ -66,12 +66,17 @@ export const getDelete = async (req, res) => {
     return res.redirect("/");
 };
 
-export const search = (req, res) => {
+export const search = async(req, res) => {
     const { keyword } = req.query;
+    let videos = [];
     if (keyword) {
-
+        videos = await Video.find({
+            title: {
+                $regex: new RegExp(keyword, "i")
+            }
+        });
     }
-    return res.render("search", { pageTitle: "Search video"});
+    return res.render("search", { pageTitle: "Search video", videos});
 }
 
 export const upload = (req, res) => res.send("upload video");
