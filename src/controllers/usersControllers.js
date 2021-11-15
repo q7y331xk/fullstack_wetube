@@ -7,21 +7,33 @@ export const postJoin = async(req, res) => {
     const { email, username, password, password2, name, location } = req.body;
     const pageTitle = "Join";
     if (password !== password2) {
-        return res.render("join", {pageTitle, errorMessage: "Password confirmation does not match.",})
+        return res.status(400).render("join", {pageTitle, errorMessage: "Password confirmation does not match.",})
     }
     if(await User.exists({ username })){
-        return res.render("join", {pageTitle, errorMessage: "This username is already taken.",})
+        return res.status(400).render("join", {pageTitle, errorMessage: "This username is already taken.",})
     }
     if(await User.exists({ email })){
-        return res.render("join", {pageTitle, errorMessage: "This email is already taken.",})
+        return res.status(400).render("join", {pageTitle, errorMessage: "This email is already taken.",})
     }
-    await User.create({
-        email, username, password, name, location,
-    });
+    try {
+        await User.create({
+            email, username, password, name, location,
+        });
+    } catch(error) {
+        return res.status(400).render("join", { pageTitle: "Create account fail" });
+    }
     return res.redirect("/login");
+}
+export const getLogin = (req,res) => res.render("login", {pageTitle: "Login page"});
+export const postLogin = async (req,res) => {
+    const {username, password} = req.body;
+    const exist = await User.exists({ username });
+    if (!exist) {
+        return res.status(400).render("login", {pageTitle: "Login", errorMessage: "An account with this username dose not exist."})
+    }
+    res.end()
 }
 export const edit = (req, res) => res.send("user edit");
 export const remove = (req, res) => res.send("user delete");
-export const login = (req,res) => res.send("user login");
 export const logout = (req, res) => res.send("user logout");
 export const profile = (req, res) => res.send("user profile");
