@@ -38,6 +38,8 @@ export const postLogin = async (req,res) => {
     if (!matchPassword) {
         return res.status(400).render("login", {pageTitle, errorMessage: "Password does not match"})
     }
+    req.session.loggedIn = true;
+    req.session.user = user;
     console.log("LOG USER IN! COMING SOON!");
     return res.redirect("/");
 }
