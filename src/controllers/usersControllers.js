@@ -30,18 +30,16 @@ export const getLogin = (req,res) => res.render("login", {pageTitle: "Login page
 export const postLogin = async (req,res) => {
     const {username, password} = req.body;
     const pageTitle = "Login";
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username, oauthOnly: false });
     if (!user) {
         return res.status(400).render("login", {pageTitle, errorMessage: "An account with this username dose not exist."})
     }
-    console.log(user.password);
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword) {
         return res.status(400).render("login", {pageTitle, errorMessage: "Password does not match"})
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    console.log("LOG USER IN! COMING SOON!");
     return res.redirect("/");
 };
 export const startGithubLogin = (req, res) => {
@@ -55,7 +53,6 @@ export const startGithubLogin = (req, res) => {
     const finalUrl = `${baseUrl}?${params}`;
     return res.redirect(finalUrl);
 };
-
 export const finishGithubLogin = async (req, res) => {
     const baseUrl = "https://github.com/login/oauth/access_token";
     const config = {
@@ -72,7 +69,7 @@ export const finishGithubLogin = async (req, res) => {
             Accept: "application/json",
             },
         })
-    ).json();
+    ).json(); 
     if ("access_token" in tokenRequest) {
         const {access_token} = tokenRequest;
         const apiUrl = "https://api.github.com";
@@ -85,38 +82,58 @@ export const finishGithubLogin = async (req, res) => {
             headers: {
                 Authorization: `token ${access_token}`,
             },
-        })
+        }) 
         ).json();
         const emailObj = emailData.find(
             (email) => (email.primary === true &&  email.verified === true
         ));
         if(!emailObj) {
+            // set notification (로그인 안되는 이유)
             return res.redirect("/login");
         }
-        const existingUser = await User.findOne({ email: emailObj.email });
-        if (existingUser) {
-            req.session.loggedIn = true;
-            req.session.user = existingUser;
-            return res.redirect("/");
-        } else {
-            const user = await User.create({
+        let user = await User.findOne({ email: emailObj.email });
+        if (!user) {
+                user = await User.create({
                 name: userData.name ? userData.name : "Unknown",
+                avatarUrl: userData.avatarUrl ? userData.avatarUrl : "",
                 username: userData.login,
                 email: emailObj.email,
                 password: "",
                 oauthOnly: true,
                 location: userData.location,
             });
-            req.session.loggedIn = true;
-            req.session.user = user;
-            return res.redirect("/");
+            // 이 결과 부족한게 있으면 채워넣는 페이지가 보통 있는듯
         }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
     } else {
     // error가 있을시 notification을 따로 보내고 싶음
         return res.redirect("/login");
     }
 };
-export const edit = (req, res) => res.send("user edit");
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", {
+        pageTitle: "Edit Profile",
+    });
+};
+
+export const postEdit = async (req, res) => {
+    const { 
+        session: { user: { _id }, },
+    } = req;
+    const newUser = await User.findByIdAndUpdate(
+        _id,
+        { name, location },
+        { new: true },
+    );
+    req.session.user = newUser;
+    return res.redirect("/users/edit");
+};
+
 export const remove = (req, res) => res.send("user delete");
-export const logout = (req, res) => res.send("user logout");
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/");
+}
 export const profile = (req, res) => res.send("user profile");
