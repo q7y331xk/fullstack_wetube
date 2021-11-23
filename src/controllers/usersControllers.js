@@ -119,6 +119,11 @@ export const getEdit = (req, res) => {
 };
 
 export const postEdit = async (req, res) => {
+    const { name, location } = req.body;
+    console.log(name);
+    console.log(req.session.user.name);
+    if (name === req.session.user.name && location === req.session.user.location) 
+        return res.status(400).render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "There is no difference"}) 
     const { 
         session: { user: { _id }, },
     } = req;
