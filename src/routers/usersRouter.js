@@ -1,5 +1,5 @@
 import express  from "express";
-import { profile, logout, getEdit, postEdit, remove, startGithubLogin, finishGithubLogin,
+import { userpage, logout, getEdit, postEdit, remove, startGithubLogin, finishGithubLogin,
     getChangePassword, postChangePassword } from "../controllers/usersControllers";
 import { avatarUploads, privateOnlyMiddleware, publicOnlyMiddleware,
      } from "../middlewares";
@@ -12,5 +12,5 @@ userRouter.get("/delete", remove);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.route("/change-password").all(privateOnlyMiddleware).get(getChangePassword).post(postChangePassword);
-userRouter.get("/:id", profile);
+userRouter.get("/:id", userpage);
 export default userRouter;

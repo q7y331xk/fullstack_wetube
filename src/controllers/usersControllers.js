@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Video from "../models/Video";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -175,5 +176,14 @@ export const remove = (req, res) => res.send("user delete");
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
-}
-export const profile = (req, res) => res.send("user profile");
+};
+export const userpage = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+        return res.status(404).render("404", { pageTitle : "User not found." });
+    }
+    const videos = await Video.find({ owner: id });
+    console.log(videos);
+    return res.render("userpage", { pageTitle: `${user.name}'s page`, user, videos });
+};
