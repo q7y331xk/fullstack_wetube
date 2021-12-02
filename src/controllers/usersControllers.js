@@ -179,11 +179,9 @@ export const logout = (req, res) => {
 };
 export const userpage = async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("videos");
     if (!user) {
         return res.status(404).render("404", { pageTitle : "User not found." });
     }
-    const videos = await Video.find({ owner: id });
-    console.log(videos);
-    return res.render("userpage", { pageTitle: `${user.name}'s page`, user, videos });
+    return res.render("userpage", { pageTitle: `${user.name}'s page`, user});
 };
