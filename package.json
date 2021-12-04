@@ -8,7 +8,8 @@
     "url": "git+https://github.com/q7y331xk/fullstack_wetube.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "dev": "nodemon --exec babel-node src/init.js",
+    "assets": "webpack --config webpack.config.js"
   },
   "keywords": [
     "fullstack"
@@ -35,6 +36,8 @@
     "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
     "@babel/preset-env": "^7.15.6",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
   }
 }
