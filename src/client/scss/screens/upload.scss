@@ -1,0 +1,15 @@
+.upload__label {
+  display: flex;
+  flex-direction: column;
+  margin: 0 30px;
+  font-size: 20px;
+  label {
+    text-align: center;
+    font-size: 50px;
+  }
+  input {
+    height: 40px;
+    font-size: 20px;
+    padding-left: 10px;
+  }
+}

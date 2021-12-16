@@ -3,13 +3,13 @@ extends base
 block content 
     if errorMessage 
         span=errorMessage
-    form(method="POST")
+    form(method="POST" class="form join--form")
         input(placeholder="username",name="username", type="text", required)
         input(placeholder="password",name="password", type="password", required)
         input(type="submit", value="Login")
         br
         a(href="/users/github/start") Continue with Github &rarr;
     hr
-    div 
+    div(class="login__OauthLogin")
         span Create new account? 
-        a(href="/join") Join now &rarr;
+        a(href="/join" class="colorText") Join now &rarr;

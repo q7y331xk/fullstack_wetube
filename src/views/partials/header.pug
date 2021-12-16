@@ -1,0 +1,22 @@
+header.header__body 
+    // h1=pageTitle
+    a(href="/" class="header__home")
+        i(class="fas fa-user-friends")
+    nav 
+        ul(class="header__list")    
+            if loggedIn 
+                li 
+                    a(href="/users/edit") Edit Profile
+                li
+                    a(href="/users/logout") Logout
+                li 
+                    a(href=`/users/${loggedInUser._id}`)=`My Profile`
+                li 
+                    a(href="/videos/upload") Upload Video     
+            else 
+                li 
+                    a(href="/join") Join     
+                li 
+                    a(href="/login") Login
+            li 
+                a(href="/search") Search Video     

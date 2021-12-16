@@ -1,0 +1,17 @@
+.header__body {
+  text-align: center;
+}
+.header__home {
+  font-size: 50px;
+  color: $mainBlue;
+}
+
+.header__list {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  font-size: 30px;
+  margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+}
