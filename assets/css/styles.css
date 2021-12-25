@@ -186,6 +186,15 @@ table {
   padding-left: 10px;
 }
 
+#recordContainer {
+  display: flex;
+  justify-content: right;
+}
+
+#record {
+  margin: 0 30px;
+}
+
 .join__Oauth {
   font-size: 20px;
 }
@@ -218,6 +227,10 @@ table {
 .watch p {
   font-size: 40px;
   font-weight: 600;
+}
+
+#play {
+  background-color: #00afb9;
 }
 
 .edit h4 {

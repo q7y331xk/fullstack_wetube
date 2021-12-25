@@ -103,3 +103,14 @@ export const search = async(req, res) => {
 }
 
 export const upload = (req, res) => res.send("upload video");
+
+export const registerView = async(req, res) =>{
+    const { id } = req.params;
+    const video = await Video.findById(id);
+    if (!video) {
+        return res.sendStatus(304);
+    }
+    video.meta.views += 1;
+    await video.save();
+    return res.sendStatus(200);
+};
