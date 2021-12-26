@@ -10,7 +10,7 @@ export const home = async(req, res) => {
     const videos = await Video.find({})
         .sort({ createdAt: "asc" })
         .populate("owner");
-    return res.render("home", { pageTitle: "Home" , videos});
+    return res.render("home", { pageTitle: "Home" , videos });
 };
 export const watch = async (req, res) => {
     const { id } = req.params;
@@ -56,13 +56,15 @@ export const getUpload = (req, res) => {
 };
 export const postUpload = async (req, res) => {
     const { user: { _id} } = req.session;
-    const file=req.file;
+    console.log(req.files);
+    const { video, thumb } = req.files;
     const { title, description, hashtags } = req.body;
     try {
         const newVideo = await Video.create({
             title,
             description,
-            fileUrl: file ? file.path : "",
+            fileUrl: video[0] ? video[0].path : "",
+            thumbUrl: thumb[0] ? thumb[0].path : "",
             hashtags: Video.formatHashtags(hashtags),
             owner: _id,
         });

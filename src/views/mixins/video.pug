@@ -1,7 +1,6 @@
 mixin video(video)
     div.video__content
-        div(style="display:flex;justify-content:center;align-items:center;width:200px;height:200px;background:aliceblue;")
-            span fake thumbnail
+        div(style=`width:500px;height:500px;background-image:url(${video.thumbUrl});background-size:cover;background-position:center;`)
         h4
             a(href=`/videos/${video.id}`)=video.title
         p=video.description + " " + video.meta.views + " views"

@@ -6,6 +6,7 @@ const videoSchema = new mongoose.Schema({
     createdAt: { type: Date, required: true, default: Date.now },
     hashtags: [{ type: String, trim: true }],
     fileUrl: { type: String, required: true},
+    thumbUrl: { type: String, required: true},
     // auto part
     meta: {
         views: { type: Number, default: 0, required: true },

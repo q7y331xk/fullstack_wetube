@@ -9,6 +9,8 @@ block content
     form(method="POST" enctype="multipart/form-data").upload__label
         label(for="video") Video File 
         input(type="file" name="video" id="video" required, accept="video/*")
+        label(for="thumb") Thumbnail File 
+        input(type="file" name="thumb" id="thumb" required, accept="image/*")
         input(placeholder="Title", required, type="text" name="title")
         input(placeholder="Description", required, type="text" name="description")
         input(placeholder="Hashtags, separated by comma.", required, type="text" name="hashtags")
