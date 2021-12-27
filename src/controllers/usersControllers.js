@@ -174,7 +174,9 @@ export const postChangePassword = async (req, res) => {
 
 export const remove = (req, res) => res.send("user delete");
 export const logout = (req, res) => {
-    req.session.destroy();
+    req.session.loggedIn = false;
+    req.session.user = null;
+    req.flash("error", "Logout ByeBye");
     return res.redirect("/");
 };
 export const userpage = async (req, res) => {

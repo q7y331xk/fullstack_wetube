@@ -269,3 +269,30 @@ body {
   color: #00afb9;
   font-weight: 600;
 }
+
+@keyframes topAway {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-100px);
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+    transform: translateY(-100px);
+  }
+}
+.message {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 200px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: tomato;
+  animation: topAway 3s 5s forwards;
+  color: white;
+}

@@ -27,6 +27,7 @@ export const getEdit = async (req, res) => {
         return res.status(404).render("404", { pageTitle: "Video not Found."});
     }
     if (String(video.owner) !== req.session.user._id) {
+        req.flash("error", "Get Edit Not Authorized");
         return res.status(403).redirect("/");
     }
     return res.render("edit", { pageTitle: `Editing ${video.title}`, video});
@@ -116,3 +117,9 @@ export const registerView = async(req, res) =>{
     await video.save();
     return res.sendStatus(200);
 };
+
+export const registerComment = (req, res) => {
+    console.log(req.body);
+    console.log(req.params);
+    res.end();
+}
