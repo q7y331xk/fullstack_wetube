@@ -129,7 +129,7 @@ export const postEdit = async (req, res) => {
         return res.status(400).render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "There is no difference"}) 
     const newUser = await User.findByIdAndUpdate(
         _id,
-        { name, location, avatarUrl: file ? file.path : req.session.user.avatarUrl},
+        { name, location, avatarUrl: file ? file.location : req.session.user.avatarUrl},
         { new: true },
     );
     req.session.user = newUser;
