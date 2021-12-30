@@ -9,10 +9,19 @@ const s3 = new aws.S3({
     },
 });
 
-const multerUploader = multers3({
+const isHeroku = process.env.NODE_ENV === "production";
+
+const s3ImageUploader = multers3({
     s3: s3,
-    bucket: 'ductube',
+    bucket: 'ductube/images',
     acl: 'public-read',
+});
+
+const s3VideoUploader = multers3({
+    s3: s3,
+    bucket: 'ductube/videos',
+    acl: 'public-read',
+    contentType: multers3.AUTO_CONTENT_TYPE,
 });
 
 export const localsMiddleware = (req, res, next) => {
@@ -43,12 +52,12 @@ export const avatarUploads = multer({
     limits: {
         fileSize: 3000000,
     },
-    storage: multerUploader,
+    storage: isHeroku ? s3ImageUploader : undefined,
  });
 export const videoUploads = multer({ 
     dest: "uploads/videos/",
     limits: {
     fileSize: 10000000,
     },
-    storage: multerUploader,
+    storage: isHeroku ? s3VideoUploader : undefined,
 });

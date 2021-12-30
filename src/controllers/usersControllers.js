@@ -126,10 +126,12 @@ export const postEdit = async (req, res) => {
         file 
         } = req;
     if (name === req.session.user.name && location === req.session.user.location && file.path === req.session.user.avatarUrl) 
-        return res.status(400).render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "There is no difference"}) 
+        return res.status(400).render("edit-profile", { pageTitle: "Edit Profile", errorMessage: "There is no difference"})
+    const isHeroku = process.env.NODE_ENV === "production"; 
     const newUser = await User.findByIdAndUpdate(
         _id,
-        { name, location, avatarUrl: file ? file.location : req.session.user.avatarUrl},
+        { name, location,
+            avatarUrl: file ? ( isHeroku ? file.location : file.path ) : req.session.user.avatarUrl},
         { new: true },
     );
     req.session.user = newUser;
@@ -187,8 +189,10 @@ export const userpage = async (req, res) => {
             path: "owner",
         },
     });
+    console.log(user);
     if (!user) {
         return res.status(404).render("404", { pageTitle : "User not found." });
     }
     return res.render("userpage", { pageTitle: `${user.name}'s page`, user});
 };
+
